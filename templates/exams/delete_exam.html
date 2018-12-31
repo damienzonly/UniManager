@@ -1,0 +1,25 @@
+{% extends 'layout/home_layout.html' %}
+
+{% block content %}
+
+    <div class="row no-gutters mt-5">
+        <div class="col-md-4 offset-md-4 p-4">
+            <div class="alert alert-danger">
+                <h2> Are you sure?</h2>
+                <p class="text-dark p-2 mt-3">
+                    If you click "Sure", the exam <strong>{{ exam.subject.name|upper }}</strong> will be deleted...<br>
+                    Don't worry though, you can alway create a new one!
+                </p>
+                <form class="form-group mt-4" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <input type="submit" class="btn btn-outline-danger p-1 pl-3 pr-3" value="Sure!">
+                        <a href="{% url 'exams' %}" class="btn btn-outline-info p-1 pl-3 pr-3">Cancel</a>
+                    </p>
+                </form>
+            </div>
+            <img src="https://media.giphy.com/media/5xaOcLwEvFOizxHVyVy/giphy.gif">
+        </div>
+    </div>
+
+{% endblock %}

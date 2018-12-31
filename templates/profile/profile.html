@@ -1,0 +1,119 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+    <style>
+        tr {
+            border-bottom: 1px solid var(--blue) !important;
+        }
+    </style>
+    <div class="row mb-5 no-gutters mt-5">
+        <div class="col-md-6">
+            <div class="container w-50 mx-auto">
+                <h2>
+                    Profile
+                </h2>
+                <table class="table table-borderless">
+                    <tr>
+                        <td class=""><strong>Username</strong></td>
+                        <td class="">{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Email</strong></td>
+                        <td class="">{% if user.email %}{{ user.email }}{% else %}-{% endif %}</td>
+                    </tr>
+                </table>
+                <hr class="m-5">
+                <table class="table table-borderless">
+                    <tr>
+                        <td class=""><strong>University</strong></td>
+                        <td class="">
+                            {% if student.university %}
+                                {{ student.university|capfirst }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Course</strong></td>
+                        <td class="">
+                            {% if student.course.name %}
+                                {{ student.course.name|capfirst }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Student ID</strong></td>
+                        <td class="">
+                            {% if student.studentID %}
+                                {{ student.studentID }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Member Since</strong></td>
+                        <td class="">
+                            {% if student.member_since %}
+                                {{ student.member_since }}
+                            {% else %}
+                                -
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                </table>
+
+                {% if student.bio %}
+                    <h2 class="mt-5">
+                        Bio
+                    </h2>
+                    <p>
+                        {{ student.bio|capfirst }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6 border-left">
+            {% if errs %}
+                {% for error in errs %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <h2 class="w-50 mx-auto">
+                University Info
+            </h2>
+            <form method="post" class="w-50 mx-auto">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="btn btn-outline-primary" value="Submit">
+            </form>
+
+            <h2 class="mt-5 w-50 mx-auto">
+                Profile Info
+            </h2>
+            <form class="w-50 mx-auto" method="post">
+                {% csrf_token %}
+                {{ formBio.as_p }}
+                <input type="submit" class="btn btn-outline-primary" value="Submit">
+            </form>
+
+{#            <h2 class="mt-5 w-50 mx-auto">#}
+{#                User Info#}
+{#            </h2>#}
+{#            <form class="w-50 mx-auto" method="post">#}
+{#                {% csrf_token %}#}
+{#                {{ userInfoForm.as_p }}#}
+{#                <input type="submit" class="btn btn-outline-primary" value="Submit">#}
+{#            </form>#}
+        </div>
+    </div>
+
+{% endblock %}

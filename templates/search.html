@@ -1,0 +1,83 @@
+{% extends 'layout/home_layout.html' %}
+
+{% block content %}
+    <div class="row no-gutters mt-5">
+        <div class="col-md-4 offset-md-4 mt-5">
+            {% if query == 'search-user' %}
+                {% if users %}
+                    <h1> Search for Users</h1>
+                    <ul class="list-group mb-5 shadow">
+                        {% for user in users %}
+                            <li class="list-group-item list-group-item-action">
+                                <a class="text-primary font-weight-bold" href="{% url 'profile_info' user.username %}">
+                                    @{{ user.username }}
+                                </a>
+                                <p class="m-0 mt-3">
+                                    <small>
+                                        Joined: {{ user.date_joined|date:"j M Y" }}
+                                    </small>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert text-center bg-blue text-white shadow ">
+                        No matching user
+                    </div>
+                {% endif %}
+
+
+
+            {% elif posts %}
+                {% if query == 'search-title' %}
+                    <h1> Search for Post Title</h1>
+                {% elif query == 'search-content' %}
+                    <h1> Search for Post Content</h1>
+                {% elif query == 'search-category' %}
+                    <h1> Search for Post Category</h1>
+                {% endif %}
+                {% for post in posts %}
+                    <div class="card shadow m-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <h1>
+                                    {{ post.title|capfirst }}
+                                </h1>
+                            </h5>
+                            <p class="pb-4">
+                                <a href="{% url 'profile_info' post.author%}">
+                                    @{{ post.author }}
+                                </a>
+                            </p>
+                            <div class="card-text">
+                                {{ post.body|truncatechars_html:500|safe }}
+                                <br>
+                            </div>
+                            <a href="{% url 'get_post' post.id %}" class="btn btn-outline-primary pull-left">
+                                Read More...
+                            </a>
+                            <small class="m-3 pull-right">
+                                {{ post.date_created }}
+                                <span class="ml-2 mr-2">
+                                    &middot;
+                                </span>
+                                Comments:
+                                {{ post.comment_set.count }}
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert text-center bg-blue text-white shadow ">
+                    {% if query == 'search-title' %}
+                        No matching post title
+                    {% elif query == 'search-content' %}
+                        No matching post content
+                    {% elif query == 'search-category' %}
+                        No matching post category
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

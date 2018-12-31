@@ -1,0 +1,30 @@
+{% extends 'layout/home_layout.html' %}
+
+{% block content %}
+    <div class="container w-75 text-center mt-5">
+        <h1>
+            Search
+        </h1>
+        {% if not student.course %}
+            <small>
+                Add your university infos in <a href="{% url 'profile' %}">your profile</a>
+            </small>
+        {% endif %}
+    </div>
+    <div class="w-50 mx-auto mt-5">
+        <form class="input-group mb-3">
+            <input type="text" name="ricerca" class="form-control p-4" placeholder="What are you looking for?" aria-label="Text input with dropdown button">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    &nbsp;&nbsp;Search Type...
+                </button>
+                <div class="dropdown-menu">
+                    <input type="submit" class="dropdown-item" value="User" formaction="{% url 'search-user' %}">
+                    <input type="submit" class="dropdown-item" value="Title" formaction="{% url 'search-title' %}">
+                    <input type="submit" class="dropdown-item" value="Content" formaction="{% url 'search-content' %}">
+                    <input type="submit" class="dropdown-item" value="Category" formaction="{% url 'search-category' %}">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

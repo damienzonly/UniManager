@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% include 'dipendencies/headers/css.html' %}
+    <title>{% block title %}UniManager{% endblock %}</title>
+</head>
+<body>
+{% include 'dipendencies/scripts/js.html' %}
+{% include 'navbars/navbar.html' %}
+
+
+{% block content %}
+    <style>
+        body {
+            background-image: url("{% static 'img/do-more.jpg' %}");
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <div class="row no-gutters mt-5 p-5">
+        <div class="col-md-8 p-4">
+
+        </div>
+        <div class="col-md-4 p-4">
+            {% block formcontent %}
+                {% include 'forms/loginForm.html' %}
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}
+
+</body>
+</html>

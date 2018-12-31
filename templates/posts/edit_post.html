@@ -1,0 +1,39 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+    <div class="row no-gutters mt-5">
+        <div class="col-md-6 offset-md-3">
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            <h1>
+                Edit post
+            </h1>
+            <div class="h4">{{ post.title|capfirst }}</div>
+            <form class="form-group" action="{% url 'edit_post' post.id %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>
+                    <label for="id_newCategory"> Categories: </label>
+                    <input id="id_newCategory" name="categories" required type="text" class="form-control">
+                    <small>
+                        Use at least one category. Separate categories with a comma, ex: History, IT, Geography
+                    </small>
+                </p>
+                <p>
+                    <input type="submit" class="btn btn-outline-primary" value="Submit">
+                    <a class="btn btn-outline-danger" href="{% url 'get_post' post.id %}"> Cancel </a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script>
+        $('.summernote').html('{{ post.body }}')
+        $('[name="categories"]').val('{{ categories }}')
+    </script>
+    {% include 'dipendencies/scripts/summernote.html' %}
+{% endblock %}

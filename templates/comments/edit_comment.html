@@ -1,0 +1,33 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+
+    <div class="row no-gutters mt-5">
+        <div class="col-md-6 offset-md-3">
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            <div class="h4">{{ post.title|capfirst }}</div>
+            <p>
+                {{ post.body|safe }}
+            </p>
+            <form class="form-group" action="{% url 'comment_post' post.id %}" method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="id_comment"> <strong>Comment:</strong> </label>
+                    <textarea id="id_comment" rows="10" name="body" required type="" class="form-control"></textarea>
+                </p>
+                <p>
+                    <input type="submit" class="btn btn-outline-primary" value="Submit">
+                    <a class="btn btn-outline-danger" href="{% url 'get_post' post.id%}"> Cancel </a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

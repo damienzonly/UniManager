@@ -1,0 +1,38 @@
+:root {
+    --blue: rgb(45, 56, 82);
+    --blue-faded: rgba(45, 56, 82, .8);
+}
+
+
+body {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+#loginForm {
+    box-shadow: 0px 0px 30px 10px rgba(0, 0, 0, .2);
+}
+
+.navbar {
+    box-shadow: 0px 5px 25px 5px rgba(0, 0, 0, .2);
+}
+
+.bg-orange {
+    background-color: rgba(255, 165, 0, .85) !important;
+}
+
+.color-blue {
+    color: var(--blue) !important;
+    border-color: var(--blue) !important;
+}
+
+.bg-blue {
+    background-color: var(--blue);
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: var(--blue);
+}
+
+.summernote {
+    height: 1000px !important;
+}

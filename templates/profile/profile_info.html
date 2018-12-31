@@ -1,0 +1,127 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+    <style>
+        tr {
+            border-bottom: 1px solid var(--blue) !important;
+        }
+    </style>
+    <div class="row no-gutters mt-5">
+        <div class="col-md-6">
+            <div class="container w-50 mx-auto">
+                <h2>
+                    Profile
+                </h2>
+                <table class="table table-borderless">
+                    <tr>
+                        <td class=""><strong>Username</strong></td>
+                        <td class="">{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Email</strong></td>
+                        <td class="">
+                            {% if user.email %}
+                                {{ user.email }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <hr class="m-5">
+                <table class="table table-borderless">
+                    <tr>
+                        <td class=""><strong>University</strong></td>
+                        <td class="">
+                            {% if student.university %}
+                                {{ student.university|capfirst }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Course</strong></td>
+                        <td class="">
+                            {% if student.course.name %}
+                                {{ student.course.name|capfirst }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Date joined</strong></td>
+                        <td class="">
+                            {% if user.date_joined|date:"j M Y" %}
+                                {{ user.date_joined|date:"j M Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class=""><strong>Member Since</strong></td>
+                        <td class="">
+                            {% if student.member_since %}
+                                {{ student.member_since }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+                {% if student.bio %}
+                    <h2 class="mt-5">
+                        Bio
+                    </h2>
+                    <p>
+                        {{ student.bio|capfirst }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        {% if posts %}
+            <div class="col-md-6">
+                <h2>
+                    <a href="{% url 'profile_posts' user.username %}">@{{ user.username }}</a> recent posts
+                </h2>
+                {% for post in posts %}
+                    <div class="card shadow m-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <h1>
+                                    {{ post.title|capfirst }}
+                                </h1>
+                            </h5>
+                            <div class="card-text">
+                                {{ post.body|truncatechars_html:500|safe }}
+                                <br>
+                            </div>
+                            <a href="{% url 'get_post' post.id %}" class="btn btn-outline-primary pull-left">
+                                Read More...
+                            </a>
+                            <small class="m-3 pull-right">
+                                {{ post.date_created }}
+                                <span class="ml-2 mr-2">
+                                    &middot;
+                                </span>
+                                Comments:
+                                {{ post.comment_set.count }}
+                            </small>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No posts found
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

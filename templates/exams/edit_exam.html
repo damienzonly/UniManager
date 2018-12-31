@@ -1,0 +1,46 @@
+{% extends 'layout/home_layout.html' %}
+
+{% block content %}
+
+    <div class="row mt-5">
+        <div class="col-md-4 p-4 offset-md-4">
+            <h2>
+                {{ exam.subject.name|capfirst }}
+            </h2>
+            <form class="form-group" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name == 'passed' %}
+                        <p>
+                            Passed:
+                        </p>
+                        {{ field }}
+                    {% elif field.name == 'date_passed' %}
+                        <p>
+                            {{ field.label }}
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                            {{ field }}
+                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                        </p>
+                    {% else %}
+                        <p>
+                            <label for="id_{{ field.name }}">{{ field.label }}</label>
+                            {{ field }}
+                        </p>
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-info p-2 pl-4 pr-4" formnovalidate>
+                    <i class="fa fa-check"></i>
+                    Edit
+                </button>
+                <a href="/exams" class="btn btn-danger p-2 pl-4 pr-4">
+                    <i class="fa fa-times"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

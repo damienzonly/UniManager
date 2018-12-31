@@ -1,0 +1,91 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+    <div class="row mt-5 no-gutters">
+        <div class="col-md-6 offset-md-3">
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            {% if err %}
+                <div class="alert alert-danger">
+                    {{ err }}
+                </div>
+            {% endif %}
+            {% if posts %}
+                <h1>
+                    Your posts
+                </h1>
+                {% for post in posts %}
+                    <div class="card shadow m-4">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <h1>
+                                    {{ post.title|capfirst }}
+                                </h1>
+                            </h5>
+                            <div class="card-text">
+                                {{ post.body|truncatechars_html:500|safe }}
+                                <br>
+                            </div>
+                            <a href="{% url 'get_post' post.id %}" class="btn btn-outline-primary pull-left">
+                                Read More...
+                            </a>
+                            <small class="m-3 pull-right">
+                                {{ post.date_created }}
+                                <span class="ml-2 mr-2">
+                                    &middot;
+                                </span>
+                                Comments:
+                                {{ post.comment_set.count }}
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <nav>
+                    <ul class="pagination pagination-lg pull-right mt-5 pt-5">
+                        {% if posts.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{% url 'display_post' %}?page={{ posts.previous_page_number }}">
+                                    Prev.
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{% url 'display_post' %}?page={{ posts.previous_page_number }}">
+                                    {{ posts.previous_page_number }}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <a class="page-link"
+                               href="{% url 'display_post' %}?page={{ posts.number }}">{{ posts.number }}</a>
+                        </li>
+
+                        {% if posts.has_next %}
+                            <li class="page-item"><a class="page-link" href="{% url 'display_post' %}?page={{ posts.next_page_number }}">
+                                {{ posts.next_page_number }}
+                            </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="{% url 'display_post' %}?page={{ posts.next_page_number }}">
+                                Next
+                            </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% else %}
+                <div class="alert alert-info">
+                    No posts found
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

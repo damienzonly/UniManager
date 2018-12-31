@@ -1,0 +1,38 @@
+{% extends 'layout/home_layout.html' %}
+
+{% block content %}
+
+    <div class="row no-gutters mt-5">
+        <div class="col-md-6 offset-md-3 mb-5">
+            {% if err %}
+                <div class="alert alert-danger">
+                    {{ err }}
+                </div>
+            {% endif %}
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            <h2>
+                Create new post
+            </h2>
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>
+                    <label for="id_newCategory"> Categories: </label>
+                    <input id="id_newCategory" name="categories" required type="text" class="form-control">
+                    <small>
+                        Use at least one category. Separate categories with a comma, ex: History, IT, Geography
+                    </small>
+                </p>
+                <p>
+                    <input type="submit" class="btn btn-outline-primary" value="Submit">
+                </p>
+            </form>
+        </div>
+    </div>
+    {% include 'dipendencies/scripts/summernote.html' %}
+
+{% endblock %}

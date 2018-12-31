@@ -1,0 +1,136 @@
+{% extends 'layout/home_layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5 text-center">
+        {% if not display %}
+            <small>
+                In order to make this work you need to update your profile infos in <a href="/profile">your profile
+                page</a>
+            </small>
+        {% endif %}
+        <h1>
+            Exams
+        </h1>
+        {% if err %}
+            <div class="alert alert-danger">
+                {{ err }}
+            </div>
+        {% endif %}
+        {% if msg %}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+        {% endif %}
+    </div>
+
+
+    {% if exams %}
+        <div class="row no-gutters">
+            <div class="col-md-6 offset-md-3 mx-auto">
+                <table class="table shadow">
+                    <tr class="text-white bg-blue">
+                        <td class=""> Subject </td>
+                        <td class=""> Passed </td>
+                        <td class=""> Date Passed </td>
+                        <td class=""> Grade </td>
+                        <td class=""></td>
+                        <td class=""></td>
+                    </tr>
+
+                    {% for item in exams %}
+                        <tr class="text-dark">
+                            <td class="">
+                                {{ item.subject.name|capfirst }}
+                            </td>
+                            <td>
+                                <img width="20" height="20" src="
+                                {% if item.passed %}
+                                    {% static 'img/yes.svg' %}
+                                {% else %}
+                                    {% static 'img/no.svg' %}
+                                {% endif %}"/>
+                            </td>
+                            <td class="">
+                                {% if item.passed and item.date_passed %}
+                                    {{ item.date_passed }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.grade %}
+                                    {{ item.grade }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="/exam/edit/{{ item.id }}" class="btn pl-4 pr-4 btn-info" value="Edit">
+                                    <li class="fa fa-pencil"></li>
+                                    Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/exam/delete/{{ item.id }}" class="btn pl-4 pr-4 btn-danger">
+                                    <li class="fa fa-trash"></li>
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="container text-center">
+            <div class="alert alert-info w-50 mx-auto">
+                No Exams registered
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
+
+
+    <div class="col-md-4 offset-md-4 bg-blue rounded text-white p-4 shadow-lg mb-5 text-center mt-5">
+        <h2>
+            New Exam
+        </h2>
+        <form class="form-group" method="post">
+            {% csrf_token %}
+            {% for field in newExamForm %}
+                {% if field.name == 'date_passed' %}
+                    <p>
+                        {{ field.label }}
+                    <div class="input-group date p-3" id="datetimepicker1" data-target-input="nearest">
+                        {{ field }}
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                    </p>
+                {% elif field.name == 'passed' %}
+                    <p>
+                        <label for="id_{{ field.name }}">{{ field.label }}</label>
+                    </p>
+                    <p>
+                        <label class="bs-switch">
+                            {{ field }}
+                            <span class="slider round"></span>
+                        </label>
+                    </p>
+                {% else %}
+                    <div class="form-group p-3 mn-3">
+                        <label for="id_{{ field.name }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+            <input class="btn btn-outline-primary" type="submit" value="Create">
+
+        </form>
+    </div>
+{% endblock %}

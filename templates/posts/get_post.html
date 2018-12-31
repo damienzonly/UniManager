@@ -1,0 +1,104 @@
+{% extends 'layout/home_layout.html' %}
+
+
+{% block content %}
+
+    <div class="row mt-5 no-gutters">
+        <div class="col-md-6 offset-md-3">
+            {% if err %}
+                <div class="alert alert-danger">
+                    {{ err }}
+                </div>
+            {% endif %}
+            {% if msg %}
+                <div class="alert alert-info">
+                    {{ msg }}
+                </div>
+            {% endif %}
+
+            {% if post %}
+                <a href="{% url 'display_post' %}" class="btn p-3 m-3">
+                    <i class="fa fa-chevron-left"></i>
+                    Indietro
+                </a>
+                <div class="container p-4 bg-white shadow-lg rounded">
+                    <h1>
+                        <a href="{% url 'get_post' post.id %}" class="text-dark">
+                            {{ post.title|capfirst }} &middot; <a href="{% url 'profile_info' post.author.username %}">
+                            {{ post.author.username }}
+                        </a>
+                        </a>
+                    </h1>
+                    <p>
+                        {{ post.body|safe|capfirst }}
+                    </p>
+                    {% if categories %}
+                        <p>
+                            {% for category in categories %}
+                                <a href="{% url 'search-category' %}?ricerca={{ category|lower }}">#{{ category|lower }}</a>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                    {% if request.user.username == post.author.username %}
+                        <a href="{% url 'edit_post' post.id %}" class="btn btn-outline-primary m-2">
+                            <i class="fa fa-pencil"></i>
+                            Edit
+                        </a>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'comment_post' post.id %}" class="btn btn-outline-primary m-2">
+                            <i class="fa fa-comment"></i>
+                            Comment
+                        </a>
+                    {% endif %}
+                    {% if request.user.username == post.author.username %}
+                        <a href="{% url 'delete_post' post.id %}" class="btn btn-outline-danger m-2">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </a>
+                    {% endif %}
+                    <div class="w-100 p-3 m-3">
+                        <p class="pull-right">
+                            {{ post.date_created }}
+                            <span class="mr-2 ml-2">&middot;</span>
+                            Comments: {{ comment_count }}
+                        </p>
+                    </div>
+                </div>
+                {% if comments %}
+                    <p class="p-4 mt-4">
+                        <strong class="h3">
+                            Comments:
+                        </strong>
+                    </p>
+                    <ul class="list-group mb-5 shadow">
+                        {% for comment in comments %}
+                            <li class="list-group-item list-group-item-action">
+                                <a class="text-primary font-weight-bold mr-2"
+                                   href="{% url 'profile_info' comment.author.username %}">
+                                    @{{ comment.author }}
+                                </a>
+                                {{ comment.body|capfirst }}
+                                <p class="mb-4">
+                                    <small>
+                                        {{ comment.date_created }}
+                                        {% if request.user.username == comment.author.username %}
+                                            &middot;
+                                            <a href="{% url 'delete_comment' comment.id %}"
+                                               class="text-danger">Delete</a>
+                                        {% endif %}
+                                    </small>
+                                </p>
+                            </li>
+                        {% endfor %}
+
+
+                    </ul>
+
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+    </div>
+{% endblock %}
